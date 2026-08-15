@@ -47,19 +47,47 @@ nav ul {
 .submenu a:hover {
   color: black;
 }
-.dropdown:hover .submenu {
+/* .dropdown:hover .submenu { */
+/*   display: grid;  */
+/*   grid-template-columns: 120px 120px 120px; */
+/*   column-gap: 20px; */
+/*   background-image:  */
+/*   linear-gradient(to right, transparent 260px, black 260px,  */
+/*   black 261px, transparent 261px), */
+/*   linear-gradient(var(--submenu-color), var(--submenu-color)); */
+/*   left: 50%; */
+/*   transform: translateX(-50%); */
+/*   position: absolute; */
+/*   top: 100%; */
+/*   color: black; */ 
+/* } */
+@media (hover: hover) {
+  .dropdown:hover .submenu {
+    display: grid; 
+    grid-template-columns: 120px 120px 120px;
+    column-gap: 20px;
+    background-image: 
+      linear-gradient(to right, transparent 260px, black 260px, black 261px, 
+      transparent 261px),
+      linear-gradient(var(--submenu-color), var(--submenu-color));
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    top: 100%;
+  }
+}
+.dropdown.open .submenu {
   display: grid; 
   grid-template-columns: 120px 120px 120px;
   column-gap: 20px;
   background-image: 
-  linear-gradient(to right, transparent 260px, black 260px, 
-  black 261px, transparent 261px),
-  linear-gradient(var(--submenu-color), var(--submenu-color));
+    linear-gradient(to right, transparent 260px, 
+    black 260px, black 261px, transparent 261px),
+    linear-gradient(var(--submenu-color), var(--submenu-color));
   left: 50%;
   transform: translateX(-50%);
   position: absolute;
   top: 100%;
-  /* color: black; */
 }
 .dropdown {
   padding: 10px 15px;
