@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat - Omegle Clone</title>
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <main class="chat-container">
+        <!-- LEFT PANEL: VIDEOS & CONTROLS -->
+        <section class="video-panel">
+            <div class="video-wrapper">
+                <!-- Stranger's Video (Large/Top) -->
+                <div class="video-box remote-video-box">
+                    <video id="remote-video" autoplay playsinline></video>
+                    <div class="video-label">Stranger</div>
+                </div>
+                <!-- Your Video (Small/Bottom Overlay or Grid) -->
+                <div class="video-box local-video-box">
+                    <video id="local-video" autoplay playsinline muted></video>
+                    <div class="video-label">You</div>
+                </div>
+            </div>
+            
+            <!-- Controls under the video -->
+            <div class="controls">
+                <button id="next-btn" class="btn btn-danger">Stop / Next</button>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: TEXT MESSAGES -->
+        <section class="text-panel">
+            <div id="chat-box" class="chat-box">
+                <div class="system-msg">Connecting to a stranger...</div>
+            </div>
+            
+            <form id="message-form" class="message-form">
+                <input type="text" id="message-input" placeholder="Type a message..." 
+                autocomplete="off" required>
+                <button type="submit" id="send-btn" class="btn btn-primary">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Include your JavaScript file -->
+    <script src="js/chat.js"></script>
+</body>
+</html>
+
+

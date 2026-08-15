@@ -1,0 +1,140 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #111;
+    color: white;
+    /* overflow: hidden; */
+}
+
+.chat-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- Left Side: Video Panel --- */
+.video-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    border-right: 2px solid #333;
+    padding: 15px;
+}
+
+.video-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.video-box {
+    flex: 1;
+    background-color: #000;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.controls {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* --- Right Side: Text Panel --- */
+.text-panel {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color: #222;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.system-msg {
+    color: #aaa;
+    font-style: italic;
+    text-align: center;
+    font-size: 14px;
+}
+
+.message-form {
+    display: flex;
+    padding: 15px;
+    background-color: #1a1a1a; /* gray*/
+    border-top: 1px solid #333;
+}
+#message-input::placeholder {
+  color: gray;
+}
+#message-input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+/* --- Buttons --- */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-danger {
+    background-color: #ff4757; /*red*/
+    color: white;
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: #1e90ff; /*blue*/
+    color: white;
+    margin-left: 10px;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+

@@ -1,0 +1,86 @@
+:root {
+  --nav-color: #282828;
+  --submenu-title-color: #505050;
+  --submenu-color: #383838;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: var(--nav-color);
+}
+nav {
+  border-bottom: 1px solid black;
+  background-color: var(--nav-color);
+  padding-top: 10px;
+  /* padding-bottom: 7px; */
+  position: relative;
+  color: white;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+nav a:hover {
+  color: white;
+  background-color: white;
+}
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  /* margin-bottom: 25px; */
+  /* margin-top: 25px; */
+  /* padding-bottom: 5px; */
+  justify-content: center;
+}
+.submenu {
+  display: none;
+}
+.submenu a:hover {
+  color: black;
+}
+.dropdown:hover .submenu {
+  display: grid; 
+  grid-template-columns: 120px 120px 120px;
+  column-gap: 20px;
+  background-image: 
+  linear-gradient(to right, transparent 260px, black 260px, 
+  black 261px, transparent 261px),
+  linear-gradient(var(--submenu-color), var(--submenu-color));
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  top: 100%;
+  /* color: black; */
+}
+.dropdown {
+  padding: 10px 15px;
+  /* position: relative; */
+}
+.dropdown:hover {
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+}
+.submenu a {
+  border: none;
+  white-space: nowrap;
+  /* color: black; */
+  /* display: flex; */
+}
+.submenu-title {
+  grid-column: span 3;      /* Forces the box to stretch across all 3 columns */
+  background-color: var(--submenu-title-color); /* A darker green so it stands out as a header bar */
+  color: white;             /* Text color */
+  padding: 5px 16px;        /* Spacing inside the title bar */
+  font-weight: bold;        /* Makes the title text pop */
+  text-align: left;       /* Centers the title text */
+}
