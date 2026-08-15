@@ -5,9 +5,20 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
+// const io = new Server(server, {
+//     cors: { origin: "*" }
+// });
 const io = new Server(server, {
-    cors: { origin: "*" }
+    cors: {
+        origin: [
+            "https://archaic-arabic.github.io", // ✅ Your live website URL goes here!
+            "http://localhost:3000"              // Keeps local desktop testing working too!
+        ],
+        methods: ["GET", "POST"],
+        credentials: true
+    }
 });
+
 
 // Automatically serves your HTML/CSS/JS frontend files to the browser
 app.use(express.static(path.join(__dirname)));
