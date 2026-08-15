@@ -60,7 +60,8 @@ function initSocketConnection() {
     // Note: Ensure the Socket.io client script tag is added to your HTML
     if (typeof io !== 'undefined') {
         // socket = io("http://localhost:3000"); old local version
-        socket = io("https://onrender.com");
+        // socket = io("https://onrender.com");  old render version
+        socket = io("https://archaic-arabic.onrender.com");
         setupSocketListeners();
     } else {
         console.warn("Socket.io is not loaded yet. Setup form listeners locally.");
