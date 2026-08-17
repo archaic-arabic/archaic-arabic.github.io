@@ -53,15 +53,36 @@ async function startWebcam() {
 // ==========================================
 // 4. STEP 2: SOCKET.IO BACKEND CONNECTION
 // ==========================================
+// function initSocketConnection() {
+//     appendSystemMessage("Connecting to matchmaking server...");
+//
+//     // Connects to your future Node.js server running on your computer
+//     // Note: Ensure the Socket.io client script tag is added to your HTML
+//     if (typeof io !== 'undefined') {
+//         // socket = io("http://localhost:3000"); old local version
+//         // socket = io("https://onrender.com");  old render version
+//         socket = io("https://archaic-arabic.onrender.com");
+//         setupSocketListeners();
+//     } else {
+//         console.warn("Socket.io is not loaded yet. Setup form listeners locally.");
+//     }
+//
+//     setupFormListeners();
+// }
+// ==========================================
+// 4. STEP 2: SOCKET.IO BACKEND CONNECTION
+// ==========================================
 function initSocketConnection() {
     appendSystemMessage("Connecting to matchmaking server...");
     
-    // Connects to your future Node.js server running on your computer
-    // Note: Ensure the Socket.io client script tag is added to your HTML
     if (typeof io !== 'undefined') {
-        // socket = io("http://localhost:3000"); old local version
-        // socket = io("https://onrender.com");  old render version
-        socket = io("https://archaic-arabic.onrender.com");
+        
+        // 📥 YOUR FIXED NEW CODE GOES INSTEAD OF THE OLD SINGLE LINE:
+        socket = io("https://archaic-arabic.onrender.com", {
+            withCredentials: true,
+            transports: ["websocket", "polling"] // Ensures a fallback protocol if websockets fail
+        });
+        
         setupSocketListeners();
     } else {
         console.warn("Socket.io is not loaded yet. Setup form listeners locally.");
@@ -69,6 +90,7 @@ function initSocketConnection() {
     
     setupFormListeners();
 }
+
 
 // ==========================================
 // 5. STEP 3: WEBRTC PEER CONNECTION LOGIC
