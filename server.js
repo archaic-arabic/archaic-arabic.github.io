@@ -5,9 +5,7 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-// const io = new Server(server, {
-//     cors: { origin: "*" }
-// });
+
 const io = new Server(server, {
     cors: {
         origin: [
@@ -19,20 +17,14 @@ const io = new Server(server, {
     }
 });
 
-
 // Automatically serves your HTML/CSS/JS frontend files to the browser
 app.use(express.static(path.join(__dirname)));
 
 // The queue array that holds users waiting for a match
 let waitingQueue = [];
 
-io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`);
-
-    // Add incoming user to the waiting queue immediately
-    waitingQueue.push(socket);
-
-    // If we have at least 2 people waiting, pair them up!
+// Pair up the first two people in the queue, if there are at least two
+function tryMatch() {
     if (waitingQueue.length >= 2) {
         const peerA = waitingQueue.shift();
         const peerB = waitingQueue.shift();
@@ -51,6 +43,14 @@ io.on('connection', (socket) => {
 
         console.log(`Matched ${peerA.id} with ${peerB.id} in ${roomId}`);
     }
+}
+
+io.on('connection', (socket) => {
+    console.log(`User connected: ${socket.id}`);
+
+    // Add incoming user to the waiting queue immediately
+    waitingQueue.push(socket);
+    tryMatch();
 
     // --- WEBRTC SIGNALLING RELAYS ---
     socket.on('send-offer', (offer) => {
@@ -72,34 +72,59 @@ io.on('connection', (socket) => {
 
     // --- LEAVE / DISCONNECT LOGIC ---
     function handleDisconnect() {
+        // Remove this socket from the waiting queue if it happens to be in it
         waitingQueue = waitingQueue.filter(user => user.id !== socket.id);
+
         if (socket.roomId) {
-            socket.to(socket.roomId).emit('stranger-disconnected');
+            const roomId = socket.roomId;
+
+            // Let the other person in the room know their stranger left
+            socket.to(roomId).emit('stranger-disconnected');
+
+            // Find whichever other socket(s) are still in the room and re-queue them
+            const room = io.sockets.adapter.rooms.get(roomId);
+            if (room) {
+                room.forEach((socketId) => {
+                    if (socketId !== socket.id) {
+                        const otherSocket = io.sockets.sockets.get(socketId);
+                        if (otherSocket) {
+                            otherSocket.leave(roomId);
+                            otherSocket.roomId = null;
+                            waitingQueue.push(otherSocket);
+                        }
+                    }
+                });
+            }
+
+            socket.leave(roomId);
         }
     }
 
     socket.on('leave-room', () => {
         handleDisconnect();
-        socket.leave(socket.roomId);
         socket.roomId = null;
-        // Re-inject them into the matchmaking pool immediately
-        io.to(socket.id).emit('matched-reset'); 
+
+        // Put the person who clicked "Next" back into the pool
+        waitingQueue.push(socket);
+
+        // Notify them that they're back in the pool
+        io.to(socket.id).emit('matched-reset');
+
+        // Try to immediately pair everyone who's now free
+        tryMatch();
     });
 
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);
         handleDisconnect();
+
+        // The abandoned peer may now be re-queued — try pairing them too
+        tryMatch();
     });
 });
 
-// server.listen(3000, () => {
-//     console.log('Server is running on http://localhost:3000');
-// });
-
-// ✅ PASTE THIS DYNAMIC PORT INITIALIZATION INSTEAD:
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
