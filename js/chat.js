@@ -18,10 +18,16 @@ let socket = null; // Will hold the Socket.io connection
 
 // Corrected STUN Server configurations (Fixed the double colon typo)
 
+// const rtcConfig = {
+//     iceServers: [
+//         { urls: 'stun:://google.com' },
+//         { urls: 'stun:://google.com' }
+//     ]
+// };
 const rtcConfig = {
     iceServers: [
-        { urls: 'stun:://google.com' },
-        { urls: 'stun:://google.com' }
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
     ]
 };
 
@@ -96,12 +102,14 @@ function initSocketConnection() {
 // 5. STEP 3: WEBRTC PEER CONNECTION LOGIC
 // ==========================================
 function createPeerConnection() {
-    // If a connection already exists, clean it up first
-    if (peerConnection) {
-        peerConnection.close();
+  if (peerConnection) peerConnection.close();
+    try {
+        peerConnection = new RTCPeerConnection(rtcConfig);
+    } catch (err) {
+        console.error("Failed to create RTCPeerConnection:", err);
+        appendSystemMessage("Connection error: " + err.message);
+        return;
     }
-
-    peerConnection = new RTCPeerConnection(rtcConfig);
 
     // Feed your local webcam video tracks into the peer connection to send to the stranger
     if (localStream) {
